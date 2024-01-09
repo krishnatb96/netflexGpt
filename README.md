@@ -9,10 +9,10 @@
 - useRef Hook
 -Firebse setp
 - deploy app
+- Redux store setup npm i @redux/toolkit and npm i react-redux 
 
-
-# Feature
-
+     Feature
+ 
 Login/signup
   sign in/ sign up form
    Redirect to Browse page
