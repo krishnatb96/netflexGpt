@@ -1,6 +1,15 @@
 # Netflix Gpt
 -create-react app
 - configured the tailwind css
+- Header
+-Routing
+-login frm
+- Sigup form
+- Form Valdation
+- useRef Hook
+-Firebse setp
+- deploy app
+
 
 # Feature
 
