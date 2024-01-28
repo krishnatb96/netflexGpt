@@ -2,11 +2,14 @@ import React, { useRef, useState } from 'react'
 import Header from './Header'
 import {checkIsValidData} from '../utils/Validation';
 // import { getAuth,createUserWithEmailAndPassword } from "firebase/auth";
-import { createUserWithEmailAndPassword ,signInWithEmailAndPassword} from "firebase/auth";
+import { createUserWithEmailAndPassword ,signInWithEmailAndPassword,updateProfile} from "firebase/auth";
 import { auth } from '../utils/FireBase';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addUser, removeUser } from "../utils/userSlice";
 function Login() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [isSignIn,setIsSignIn] = useState(true);
   const [errorMessage,setErrorMessage] = useState('')
   const email = useRef(null);
@@ -25,8 +28,23 @@ createUserWithEmailAndPassword(auth, email.current.value, password.current.value
   .then((userCredential) => {
     // Signed up 
     const user = userCredential.user;
-    console.log(user);
-    navigate('/browse');
+updateProfile(user, {
+  displayName: email.current.value, photoURL: "https://example.com/jane-q-user/profile.jpg"
+}).then(() => {
+  console.log(user);
+  const { uid, email, displayName, photoURL } = auth.currentUser;
+        dispatch(
+          addUser({
+            uid: uid,
+            email: email,
+            displayName: displayName,
+            photoURL: photoURL,
+          })
+        );
+}).catch((error) => {
+ setErrorMessage(error.message)
+});
+   
     // ...
   })
   .catch((error) => {
@@ -42,7 +60,6 @@ signInWithEmailAndPassword(auth, email.current.value , password.current.value)
     // Signed in 
     const user = userCredential.user;
     console.log(user);
-    navigate('/browse');
     // ...
   })
   .catch((error) => {
